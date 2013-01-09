@@ -6,7 +6,7 @@
 
 (defclass feature-descriptor ()
   ((extractor :reader extractor :initarg :extractor)
-   (id :reader function-id :initarg id)))
+   (id :reader function-id :initarg :id)))
 
 (defun find-feature-descriptor (name &optional (table *feature-descriptors*))
   (gethash name table))
