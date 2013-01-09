@@ -33,12 +33,17 @@
     (cond
       (result result)
       (t
-       (multiple-value-bind (eax ebx ecx edx)
+       (multiple-value-bind (supports-cpuid-p eax ebx ecx edx)
            (%cpuid function-id)
-         (setf (find-result function-id)
-               (make-instance 'result
-                              :eax eax :ebx ebx
-                              :ecx ecx :edx edx)))))))
+         (if (not supports-cpuid-p)
+             (let ((null-result
+                     (load-time-value
+                      (make-instance 'result))))
+               null-result)
+             (setf (find-result function-id)
+                   (make-instance 'result
+                                  :eax eax :ebx ebx
+                                  :ecx ecx :edx edx))))))))
 
 (defun featurep (name)
   (let ((fd (find-feature-descriptor name)))
