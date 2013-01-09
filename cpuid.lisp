@@ -2,19 +2,6 @@
 
 (in-package :cpuid)
 
-(defvar *feature-descriptors*)
-
-(defclass feature-descriptor ()
-  ((extractor :reader extractor :initarg :extractor)
-   (id :reader function-id :initarg :id)))
-
-(defun find-feature-descriptor (name &optional (table *feature-descriptors*))
-  (gethash name table))
-
-(defun (setf find-feature-descriptor) (value name
-                                       &optional (table *feature-descriptors*))
-  (setf (gethash name table) value))
-
 (defvar *cached-results* (make-hash-table))
 
 (defun find-result (function-id)
@@ -29,6 +16,12 @@
    (ecx :initarg :ecx)
    (edx :initarg :edx))
   (:default-initargs :eax 0 :ebx 0 :ecx 0 :edx 0))
+
+(defun %cpuid (function-id)
+  #+(and sbcl x86-64)
+  (%%cpuid function-id)
+  #-(and sbcl x86-64)
+  (values nil 0 0 0 0))
 
 (defun query-function (function-id)
   (let ((result (find-result function-id)))
