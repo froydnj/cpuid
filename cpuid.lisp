@@ -48,25 +48,3 @@
        (let* ((function-id (function-id fd))
               (result (query-function function-id)))
          (funcall (extractor fd) result))))))
-
-(defun build-feature-descriptors (sexp)
-  (labels ((build-extractor (register-name bit)
-             #'(lambda (result)
-                 (logbitp bit (slot-value result register-name))))
-           (install-feature-descriptor (table feature-id
-                                        feature-name register bit)
-             (let ((extractor (build-extractor register bit)))
-               (setf (find-feature-descriptor feature-name table)
-                     (make-instance 'feature-descriptor
-                                    :extractor extractor
-                                    :id feature-id)))))
-    (loop with table = (make-hash-table)
-          for (feature-id . register-descriptors) in sexp
-          do (loop for (register . bit-names) in register-descriptors
-                   do (loop for (feature-name bit) in bit-names
-                            do (install-feature-descriptor table feature-id
-                                                           feature-name
-                                                           register bit)))
-          finally (return table))))
-
-(setf *feature-descriptors* (build-feature-descriptors))
