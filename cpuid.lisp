@@ -60,16 +60,20 @@
   (labels ((build-extractor (register-name bit)
              #'(lambda (result)
                  (logbitp bit (slot-value result register-name))))
-           (install-feature-descriptor (table feature-name register bit)
+           (install-feature-descriptor (table feature-id
+                                        feature-name register bit)
              (let ((extractor (build-extractor register bit)))
                (setf (find-feature-descriptor feature-name table)
                      (make-instance 'feature-descriptor
                                     :extractor extractor
                                     :id feature-id)))))
     (loop with table = (make-hash-table)
-          for (feature-id register-descriptors) in sexp
-          do (loop for (register bit-names) in register-descriptors
+          for (feature-id . register-descriptors) in sexp
+          do (loop for (register . bit-names) in register-descriptors
                    do (loop for (feature-name bit) in bit-names
-                            do (install-feature-descriptor table feature-name
+                            do (install-feature-descriptor table feature-id
+                                                           feature-name
                                                            register bit)))
           finally (return table))))
+
+(setf *feature-descriptors* (build-feature-descriptors))
