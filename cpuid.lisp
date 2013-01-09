@@ -25,7 +25,8 @@
   ((eax :initarg :eax)
    (ebx :initarg :ebx)
    (ecx :initarg :ecx)
-   (edx :initarg :edx)))
+   (edx :initarg :edx))
+  (:default-initargs :eax 0 :ebx 0 :ecx 0 :edx 0))
 
 (defun query-function (function-id)
   (let ((result (find-result function-id)))
