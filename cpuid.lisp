@@ -11,7 +11,7 @@
 (defun find-feature-descriptor (name &optional (table *feature-descriptors*))
   (gethash name table))
 
-(defun (setf find-feature-descriptor) (name value
+(defun (setf find-feature-descriptor) (value name
                                        &optional (table *feature-descriptors*))
   (setf (gethash name table) value))
 
@@ -20,7 +20,7 @@
 (defun find-result (function-id)
   (gethash function-id *cached-results*))
 
-(defun (setf find-result) (function-id value)
+(defun (setf find-result) (value function-id)
   (setf (gethash function-id *cached-results*) value))
 
 (defclass result ()
