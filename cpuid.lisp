@@ -1,3 +1,5 @@
+; -*- mode: lisp; indent-tabs-mode: nil -*-
+
 (in-package :cpuid)
 
 (defvar *feature-descriptors*)
