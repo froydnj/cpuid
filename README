@@ -1,0 +1,9 @@
+CPUID is a library for accessing feature bits exposed by the CPUID
+instruction on Intel's x86 processors.  It does not intend to expose
+other information such as family, stepping, cache information, etc.
+
+The interface is limited but functional: CPUID:HAS-FEATURE-P takes a
+symbol denoting the desired feature name and returns T if the feature is
+supported in the current implementation, NIL otherwise.  The supported
+feature names can be found in feature-descriptors.lisp.  A description
+of each feature name is located in the appropriate Intel or AMD manuals.
