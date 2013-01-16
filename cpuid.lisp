@@ -40,7 +40,7 @@
                                   :eax eax :ebx ebx
                                   :ecx ecx :edx edx))))))))
 
-(defun featurep (name)
+(defun has-feature-p (name)
   (let ((fd (find-feature-descriptor name)))
     (cond
       ((null fd) nil)
